@@ -11,6 +11,12 @@ pip install -r requirements.txt
 python app.py
 ```
 
+For local experiments with XGBoost, install the optional local dependency set:
+
+```powershell
+pip install -r requirements-local.txt
+```
+
 Open `http://127.0.0.1:5000`.
 
 ## Dataset Flow

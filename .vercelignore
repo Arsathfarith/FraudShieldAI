@@ -1,0 +1,16 @@
+.git/
+venv/
+.venv/
+env/
+__pycache__/
+**/__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+logs/
+data/uploaded_dataset.csv
+data/sample_transactions.csv
+*.tmp
+.env
+.env.*
