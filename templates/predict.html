@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<header class="page-header">
+  <p class="eyebrow">Fraud scoring</p>
+  <h1>Prediction Input</h1>
+</header>
+
+{% if not artifacts %}
+<div class="alert error">Train a model before running predictions.</div>
+{% else %}
+<form method="post" class="predict-grid">
+  {% for feature in artifacts.feature_columns %}
+  <label>
+    <span>{{ feature }}</span>
+    {% set control = artifacts.feature_controls.get(feature, 'number' if feature in artifacts.numeric_features else 'text') %}
+    {% if control == 'select' and artifacts.categorical_options.get(feature) %}
+    <select name="{{ feature }}" required>
+      <option value="">Choose {{ feature }}</option>
+      {% for option in artifacts.categorical_options.get(feature, []) %}
+      <option value="{{ option }}">{{ option }}</option>
+      {% endfor %}
+    </select>
+    {% else %}
+    <input name="{{ feature }}" type="{{ control }}" {% if control == 'number' %}step="any"{% endif %} placeholder="Enter {{ feature }}">
+    {% endif %}
+  </label>
+  {% endfor %}
+  <button class="button primary wide" type="submit">Run Fraud Prediction</button>
+</form>
+{% endif %}
+{% endblock %}

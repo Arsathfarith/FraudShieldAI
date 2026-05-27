@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<header class="page-header">
+  <p class="eyebrow">Explainable AI</p>
+  <h1>Feature Insights</h1>
+</header>
+
+{% if not artifacts %}
+<div class="alert error">Train a model to view explainability insights.</div>
+{% else %}
+<section class="panel">
+  <h2>Global Feature Importance</h2>
+  <div class="importance-list">
+    {% for feature, score in artifacts.feature_importance|dictsort(false, 'value')|reverse %}
+    <div class="importance-row">
+      <span>{{ feature }}</span>
+      <div><i style="width: {{ (score * 100)|round(0) }}%"></i></div>
+      <strong>{{ "%.2f"|format(score) }}</strong>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

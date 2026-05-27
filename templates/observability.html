@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<header class="page-header">
+  <p class="eyebrow">System monitoring</p>
+  <h1>Observability</h1>
+</header>
+
+<section class="metric-grid">
+  <article class="metric"><span>API status</span><strong>{{ api.status }}</strong></article>
+  <article class="metric"><span>Model loaded</span><strong>{{ "Yes" if status.trained else "No" }}</strong></article>
+  <article class="metric"><span>Best model</span><strong>{{ status.best_model if status.trained else "None" }}</strong></article>
+  <article class="metric"><span>Prediction logs</span><strong>{{ logs|length }}</strong></article>
+</section>
+
+<section class="panel">
+  <h2>Fraud Detection Monitoring</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Time</th><th>Prediction</th><th>Confidence</th><th>Fraud Probability</th></tr></thead>
+      <tbody>
+        {% for log in logs %}
+        <tr>
+          <td>{{ log.timestamp }}</td>
+          <td>{{ log.label }}</td>
+          <td>{{ "%.1f"|format(log.confidence|float * 100) }}%</td>
+          <td>{{ "%.1f"|format(log.fraud_probability|float * 100) }}%</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4">No predictions logged yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

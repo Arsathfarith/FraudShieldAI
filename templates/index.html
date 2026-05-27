@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div>
+    <p class="eyebrow">AI classification operations</p>
+    <h1>FraudShield AI</h1>
+    <p class="lede">Train, compare, explain, and monitor fraud classification models from your CSV dataset.</p>
+    <div class="actions">
+      <a class="button primary" href="{{ url_for('train_page') }}">Upload Dataset</a>
+      <a class="button" href="{{ url_for('dashboard') }}">View Dashboard</a>
+    </div>
+  </div>
+  <div class="hero-panel">
+    <span class="status-dot {{ 'good' if status.trained else 'warn' }}"></span>
+    <p>{{ status.best_model if status.trained else "Awaiting training dataset" }}</p>
+    <strong>{{ "%.1f"|format(status.best_accuracy * 100) if status.trained else "0.0" }}%</strong>
+    <small>Best model accuracy</small>
+  </div>
+</section>
+
+<section class="metric-grid">
+  <article class="metric">
+    <span>Model status</span>
+    <strong>{{ "Ready" if status.trained else "Not trained" }}</strong>
+  </article>
+  <article class="metric">
+    <span>Target</span>
+    <strong>{{ status.target_display if status.trained else "Auto selected" }}</strong>
+  </article>
+  <article class="metric">
+    <span>Models compared</span>
+    <strong>{{ status.results|length if status.trained else 6 }}</strong>
+  </article>
+  <article class="metric">
+    <span>Saved model</span>
+    <strong>Pickle</strong>
+  </article>
+</section>
+{% endblock %}

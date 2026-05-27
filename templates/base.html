@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FraudShield AI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="{{ url_for('index') }}">
+      <span class="brand-mark">F</span>
+      <span>FraudShield AI</span>
+    </a>
+    <nav>
+      <a href="{{ url_for('index') }}">Overview</a>
+      <a href="{{ url_for('train_page') }}">Train</a>
+      <a href="{{ url_for('predict_page') }}">Predict</a>
+      <a href="{{ url_for('dashboard') }}">Dashboard</a>
+      <a href="{{ url_for('explainability') }}">Explainability</a>
+      <a href="{{ url_for('observability') }}">Observability</a>
+    </nav>
+  </aside>
+  <main class="shell">
+    {% block content %}{% endblock %}
+  </main>
+  <script src="{{ url_for('static', filename='js/white.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

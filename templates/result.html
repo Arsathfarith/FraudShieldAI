@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<header class="page-header">
+  <p class="eyebrow">Prediction result</p>
+  <h1>{{ result.label }}</h1>
+</header>
+
+<section class="metric-grid">
+  <article class="metric">
+    <span>Confidence</span>
+    <strong>{{ "%.1f"|format(result.confidence * 100) }}%</strong>
+  </article>
+  <article class="metric">
+    <span>Fraud probability</span>
+    <strong>{{ "%.1f"|format(result.fraud_probability * 100) }}%</strong>
+  </article>
+  <article class="metric">
+    <span>Model</span>
+    <strong>{{ artifacts.best_model }}</strong>
+  </article>
+</section>
+
+<section class="panel">
+  <h2>Why this decision</h2>
+  <p>{{ result.explanations.summary }}</p>
+  <div class="driver-list">
+    {% for item in result.explanations.drivers %}
+    <div class="driver">
+      <strong>{{ item.feature }}</strong>
+      <span>{{ item.reason }}</span>
+      <small>Signal strength {{ "%.2f"|format(item.importance) }}</small>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

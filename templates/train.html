@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<header class="page-header">
+  <p class="eyebrow">Dataset and training</p>
+  <h1>Train Classification Models</h1>
+</header>
+
+{% if error %}<div class="alert error">{{ error }}</div>{% endif %}
+{% if result %}<div class="alert success">Training complete. Best model: {{ result.best_model }}.</div>{% endif %}
+
+<section class="panel">
+  <form method="post" enctype="multipart/form-data" class="upload-form">
+    <label for="dataset">CSV dataset</label>
+    <input id="dataset" name="dataset" type="file" accept=".csv" required>
+    <button class="button primary" type="submit">Train Models</button>
+  </form>
+</section>
+
+{% if status.trained %}
+<section class="panel">
+  <h2>Training Summary</h2>
+  <div class="summary-list">
+    <p><span>Best model</span><strong>{{ status.best_model }}</strong></p>
+    <p><span>Prediction target</span><strong>{{ status.target_display }}</strong></p>
+    <p><span>Rows analyzed</span><strong>{{ status.dataset_rows }}</strong></p>
+    <p><span>Features selected</span><strong>{{ status.feature_columns|length }}</strong></p>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

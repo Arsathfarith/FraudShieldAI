@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block content %}
+<header class="page-header">
+  <p class="eyebrow">Analytics dashboard</p>
+  <h1>Model Comparison</h1>
+</header>
+
+{% if not status.trained %}
+<div class="alert error">No training metrics yet. Upload a CSV dataset first.</div>
+{% else %}
+<section class="metric-grid">
+  <article class="metric"><span>Best model</span><strong>{{ status.best_model }}</strong></article>
+  <article class="metric"><span>Prediction target</span><strong>{{ status.target_display }}</strong></article>
+  <article class="metric"><span>Dataset rows</span><strong>{{ status.dataset_rows }}</strong></article>
+  <article class="metric"><span>Predictions logged</span><strong>{{ logs|length }}</strong></article>
+</section>
+
+<section class="metric-grid">
+  <article class="metric"><span>Fraud predictions</span><strong>{{ prediction_summary.fraud }}</strong></article>
+  <article class="metric"><span>Legitimate predictions</span><strong>{{ prediction_summary.legitimate }}</strong></article>
+  <article class="metric"><span>Fraud rate</span><strong>{{ "%.1f"|format(prediction_summary.fraud_rate * 100) }}%</strong></article>
+  <article class="metric"><span>Avg fraud probability</span><strong>{{ "%.1f"|format(prediction_summary.average_probability * 100) }}%</strong></article>
+</section>
+
+<section class="dashboard-grid">
+  <article class="panel">
+    <h2>Prediction Outcome Analytics</h2>
+    <canvas class="white-chart" data-chart-type="prediction" data-chart='{{ prediction_summary.chart|tojson }}' width="520" height="300"></canvas>
+  </article>
+  <article class="panel">
+    <h2>Fraud Detection Monitoring</h2>
+    <div class="monitor-stack">
+      <p><span>Prediction target</span><strong>{{ status.target_display }}</strong></p>
+      <p><span>Latest fraud probability</span><strong>{{ "%.1f"|format(prediction_summary.latest_probability * 100) }}%</strong></p>
+      <p><span>Model in use</span><strong>{{ status.best_model }}</strong></p>
+      <p><span>Prediction log status</span><strong>{{ "Active" if logs else "Waiting" }}</strong></p>
+    </div>
+  </article>
+</section>
+
+<section class="panel">
+  <h2>Accuracy Comparison</h2>
+  <canvas class="white-chart" data-chart='{{ status.results|tojson }}' width="900" height="320"></canvas>
+</section>
+
+<section class="panel">
+  <h2>Classifier Metrics</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Model</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1</th><th>Status</th></tr></thead>
+      <tbody>
+        {% for row in status.results %}
+        <tr>
+          <td>{{ row.model }}</td>
+          <td>{{ "%.1f"|format(row.accuracy * 100) }}%</td>
+          <td>{{ "%.1f"|format(row.precision * 100) }}%</td>
+          <td>{{ "%.1f"|format(row.recall * 100) }}%</td>
+          <td>{{ "%.1f"|format(row.f1 * 100) }}%</td>
+          <td>{{ row.status }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Recent Prediction Results</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Time</th><th>Answer</th><th>Confidence</th><th>Fraud Probability</th></tr></thead>
+      <tbody>
+        {% for log in logs[:10] %}
+        <tr>
+          <td>{{ log.timestamp }}</td>
+          <td>{{ log.label }}</td>
+          <td>{{ "%.1f"|format(log.confidence|float * 100) }}%</td>
+          <td>{{ "%.1f"|format(log.fraud_probability|float * 100) }}%</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4">Prediction பண்ணிய பிறகு இங்கே result visual ஆகும்.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endif %}
+{% endblock %}
