@@ -185,6 +185,49 @@ table { width: 100%; border-collapse: collapse; min-width: 760px; }
 th, td { padding: 12px 10px; border-bottom: 1px solid var(--line); text-align: left; }
 th { color: var(--muted); font-size: 0.82rem; text-transform: uppercase; }
 .white-chart { width: 100%; max-width: 100%; height: auto; }
+.outcome-visual {
+  display: grid;
+  gap: 16px;
+}
+.outcome-bars {
+  display: grid;
+  gap: 14px;
+}
+.outcome-row {
+  display: grid;
+  grid-template-columns: 120px 1fr 58px;
+  align-items: center;
+  gap: 12px;
+}
+.outcome-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.outcome-label span { color: var(--muted); }
+.outcome-track {
+  height: 14px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: #e2e8f0;
+}
+.outcome-track i {
+  display: block;
+  height: 100%;
+  min-width: 4px;
+  border-radius: inherit;
+}
+.outcome-row.fraud .outcome-track i { background: var(--red); }
+.outcome-row.legitimate .outcome-track i { background: var(--green); }
+.outcome-row small {
+  color: var(--muted);
+  text-align: right;
+}
+.empty-note {
+  margin: 4px 0 0;
+  color: var(--muted);
+}
 .driver-list, .importance-list { display: grid; gap: 12px; }
 .driver {
   display: grid;
@@ -227,4 +270,6 @@ th { color: var(--muted); font-size: 0.82rem; text-transform: uppercase; }
   nav, .hero, .metric-grid, .summary-list, .predict-grid, .dashboard-grid { grid-template-columns: 1fr; }
   .hero { padding: 28px; }
   .shell { padding: 14px; }
+  .outcome-row { grid-template-columns: 1fr; }
+  .outcome-row small { text-align: left; }
 }

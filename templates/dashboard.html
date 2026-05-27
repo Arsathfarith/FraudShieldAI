@@ -25,7 +25,28 @@
 <section class="dashboard-grid">
   <article class="panel">
     <h2>Prediction Outcome Analytics</h2>
-    <canvas class="white-chart" data-chart-type="prediction" data-chart='{{ prediction_summary.chart|tojson }}' width="520" height="300"></canvas>
+    <div class="outcome-visual">
+      <canvas class="white-chart" data-chart-type="prediction" data-chart='{{ prediction_summary.chart|tojson }}' width="520" height="240"></canvas>
+      <div class="outcome-bars" aria-label="Prediction outcome totals">
+        {% set total_predictions = prediction_summary.total if prediction_summary.total else 1 %}
+        {% for item in prediction_summary.chart %}
+        {% set percent = (item.value / total_predictions * 100) if prediction_summary.total else 0 %}
+        <div class="outcome-row {{ item.label|lower }}">
+          <div class="outcome-label">
+            <span>{{ item.label }}</span>
+            <strong>{{ item.value }}</strong>
+          </div>
+          <div class="outcome-track">
+            <i style="width: {{ percent|round(1) }}%"></i>
+          </div>
+          <small>{{ "%.1f"|format(percent) }}%</small>
+        </div>
+        {% endfor %}
+        {% if not prediction_summary.total %}
+        <p class="empty-note">Run a prediction to populate this analytics chart.</p>
+        {% endif %}
+      </div>
+    </div>
   </article>
   <article class="panel">
     <h2>Fraud Detection Monitoring</h2>
