@@ -1,0 +1,221 @@
+{
+  "trained_at": "2026-05-27T14:56:14+00:00",
+  "dataset_rows": 1500,
+  "dataset_columns": 11,
+  "target_column": "isfraud",
+  "target_display": "Fraud Detection",
+  "feature_columns": [
+    "type",
+    "amount",
+    "oldbalanceorg",
+    "newbalanceorig",
+    "oldbalancedest",
+    "newbalancedest",
+    "amount_to_oldbalanceorg_ratio",
+    "log_amount",
+    "log_oldbalanceorg",
+    "log_newbalanceorig",
+    "log_oldbalancedest",
+    "log_newbalancedest"
+  ],
+  "numeric_features": [
+    "amount",
+    "oldbalanceorg",
+    "newbalanceorig",
+    "oldbalancedest",
+    "newbalancedest",
+    "amount_to_oldbalanceorg_ratio",
+    "log_amount",
+    "log_oldbalanceorg",
+    "log_newbalanceorig",
+    "log_oldbalancedest",
+    "log_newbalancedest"
+  ],
+  "categorical_features": [
+    "type"
+  ],
+  "feature_dtypes": {
+    "type": "object",
+    "amount": "float64",
+    "oldbalanceorg": "float64",
+    "newbalanceorig": "float64",
+    "oldbalancedest": "float64",
+    "newbalancedest": "float64",
+    "amount_to_oldbalanceorg_ratio": "float64",
+    "log_amount": "float64",
+    "log_oldbalanceorg": "float64",
+    "log_newbalanceorig": "float64",
+    "log_oldbalancedest": "float64",
+    "log_newbalancedest": "float64"
+  },
+  "categorical_options": {
+    "type": [
+      "PAYMENT",
+      "CASH_OUT",
+      "CASH_IN",
+      "TRANSFER",
+      "DEBIT"
+    ]
+  },
+  "feature_controls": {
+    "type": "select",
+    "amount": "number",
+    "oldbalanceorg": "number",
+    "newbalanceorig": "number",
+    "oldbalancedest": "number",
+    "newbalancedest": "number",
+    "amount_to_oldbalanceorg_ratio": "number",
+    "log_amount": "number",
+    "log_oldbalanceorg": "number",
+    "log_newbalanceorig": "number",
+    "log_oldbalancedest": "number",
+    "log_newbalancedest": "number"
+  },
+  "class_labels": {
+    "0": "Legitimate",
+    "1": "Fraud"
+  },
+  "fraud_class": 1,
+  "best_model": "Decision Tree",
+  "best_accuracy": 1.0,
+  "best_precision": 1.0,
+  "best_recall": 1.0,
+  "best_f1": 1.0,
+  "results": [
+    {
+      "model": "Logistic Regression",
+      "accuracy": 0.99,
+      "precision": 0.996,
+      "recall": 0.99,
+      "f1": 0.9921175620332451,
+      "status": "trained"
+    },
+    {
+      "model": "Decision Tree",
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "status": "trained"
+    },
+    {
+      "model": "Random Forest",
+      "accuracy": 0.9966666666666667,
+      "precision": 0.9966778149386845,
+      "recall": 0.9966666666666667,
+      "f1": 0.9961139028475712,
+      "status": "trained"
+    },
+    {
+      "model": "SVM",
+      "accuracy": 0.9933333333333333,
+      "precision": 0.9966666666666667,
+      "recall": 0.9933333333333333,
+      "f1": 0.9944332210998877,
+      "status": "trained"
+    },
+    {
+      "model": "KNN",
+      "accuracy": 0.9933333333333333,
+      "precision": 0.9867111111111111,
+      "recall": 0.9933333333333333,
+      "f1": 0.9900111482720177,
+      "status": "trained"
+    },
+    {
+      "model": "XGBoost",
+      "accuracy": 0.9966666666666667,
+      "precision": 0.9966778149386845,
+      "recall": 0.9966666666666667,
+      "f1": 0.9961139028475712,
+      "status": "trained"
+    }
+  ],
+  "classification_report": {
+    "0": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 298.0
+    },
+    "1": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 2.0
+    },
+    "accuracy": 1.0,
+    "macro avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 300.0
+    },
+    "weighted avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 300.0
+    }
+  },
+  "feature_importance": {
+    "type": 8.01718986002438e-15,
+    "amount": 0.8032093783031008,
+    "oldbalanceorg": 0.0,
+    "newbalanceorig": 0.0,
+    "oldbalancedest": 0.052564102564103404,
+    "newbalancedest": 0.14422651913278778,
+    "amount_to_oldbalanceorg_ratio": 0.0,
+    "log_amount": 0.0,
+    "log_oldbalanceorg": 0.0,
+    "log_newbalanceorig": 0.0,
+    "log_oldbalancedest": 0.0,
+    "log_newbalancedest": 0.0
+  },
+  "numeric_stats": {
+    "amount": {
+      "median": 11673.665,
+      "iqr": 130620.84999999999
+    },
+    "oldbalanceorg": {
+      "median": 18494.5,
+      "iqr": 109705.5
+    },
+    "newbalanceorig": {
+      "median": 8921.985,
+      "iqr": 102461.51999999999
+    },
+    "oldbalancedest": {
+      "median": 11349.810000000001,
+      "iqr": 410901.665
+    },
+    "newbalancedest": {
+      "median": 0.0,
+      "iqr": 424250.45
+    },
+    "amount_to_oldbalanceorg_ratio": {
+      "median": 0.11697591586283909,
+      "iqr": 0.6611063985382408
+    },
+    "log_amount": {
+      "median": 9.365176276353907,
+      "iqr": 3.529852312049739
+    },
+    "log_oldbalanceorg": {
+      "median": 9.82528146624843,
+      "iqr": 11.605557178854921
+    },
+    "log_newbalanceorig": {
+      "median": 9.096385686772198,
+      "iqr": 11.537249441182393
+    },
+    "log_oldbalancedest": {
+      "median": 9.33704434651095,
+      "iqr": 12.926109692540017
+    },
+    "log_newbalancedest": {
+      "median": 0.0,
+      "iqr": 12.958081600886743
+    }
+  }
+}

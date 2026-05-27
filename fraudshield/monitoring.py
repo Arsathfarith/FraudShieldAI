@@ -1,9 +1,14 @@
 import csv
+import os
+import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 
 
-LOG_DIR = Path("logs")
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+_runtime_override = os.environ.get("FRAUDSHIELD_RUNTIME_DIR")
+RUNTIME_ROOT = Path(_runtime_override) if _runtime_override else (Path(tempfile.gettempdir()) / "fraudshield-ai" if os.environ.get("VERCEL") else PROJECT_ROOT)
+LOG_DIR = RUNTIME_ROOT / "logs"
 PREDICTION_LOG = LOG_DIR / "prediction_logs.csv"
 
 
@@ -20,7 +25,7 @@ def api_status():
 
 
 def log_prediction(result):
-    LOG_DIR.mkdir(exist_ok=True)
+    LOG_DIR.mkdir(parents=True, exist_ok=True)
     fieldnames = ["timestamp", "prediction", "label", "confidence", "fraud_probability"]
     new_file = not PREDICTION_LOG.exists()
     with PREDICTION_LOG.open("a", newline="", encoding="utf-8") as handle:
