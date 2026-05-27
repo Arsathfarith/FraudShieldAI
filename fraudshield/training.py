@@ -1,5 +1,7 @@
 import json
+import os
 import pickle
+import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -19,11 +21,16 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 
 
-DATA_DIR = Path("data")
-MODEL_DIR = Path("models")
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+_runtime_override = os.environ.get("FRAUDSHIELD_RUNTIME_DIR")
+RUNTIME_ROOT = Path(_runtime_override) if _runtime_override else (Path(tempfile.gettempdir()) / "fraudshield-ai" if os.environ.get("VERCEL") else PROJECT_ROOT)
+DATA_DIR = RUNTIME_ROOT / "data"
+BUNDLED_DATA_DIR = PROJECT_ROOT / "data"
+MODEL_DIR = RUNTIME_ROOT / "models"
 MODEL_PATH = MODEL_DIR / "best_fraud_model.pkl"
 ARTIFACT_PATH = MODEL_DIR / "model_artifacts.pkl"
 METRICS_PATH = MODEL_DIR / "training_metrics.json"
+DEFAULT_DATASET_PATH = BUNDLED_DATA_DIR / "onlinefraud.csv"
 
 
 TARGET_HINTS = ("fraud", "is_fraud", "class", "label", "target", "status", "outcome", "risk")
@@ -31,12 +38,28 @@ DROP_HINTS = ("id", "uuid", "guid", "name", "email", "phone", "address")
 
 
 def train_from_csv(file_storage):
-    DATA_DIR.mkdir(exist_ok=True)
-    MODEL_DIR.mkdir(exist_ok=True)
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    MODEL_DIR.mkdir(parents=True, exist_ok=True)
     dataset_path = DATA_DIR / "uploaded_dataset.csv"
     file_storage.save(dataset_path)
+    return train_from_path(dataset_path)
 
+
+def train_from_path(dataset_path):
+    MODEL_DIR.mkdir(parents=True, exist_ok=True)
     df = pd.read_csv(dataset_path)
+    return _train_from_dataframe(df)
+
+
+def ensure_default_model():
+    if MODEL_PATH.exists() and ARTIFACT_PATH.exists() and METRICS_PATH.exists():
+        return get_training_status()
+    if DEFAULT_DATASET_PATH.exists():
+        return train_from_path(DEFAULT_DATASET_PATH)
+    return None
+
+
+def _train_from_dataframe(df):
     if df.empty:
         raise ValueError("The uploaded CSV is empty.")
 
@@ -133,6 +156,12 @@ def train_from_csv(file_storage):
 
 
 def get_training_status():
+    if not METRICS_PATH.exists():
+        ensured = ensure_default_model()
+        if ensured:
+            if isinstance(ensured, dict) and ensured.get("trained"):
+                return ensured
+            return {"trained": True, **ensured}
     if not METRICS_PATH.exists():
         return {"trained": False, "message": "No model has been trained yet."}
     status = json.loads(METRICS_PATH.read_text(encoding="utf-8"))

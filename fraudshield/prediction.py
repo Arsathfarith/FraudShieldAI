@@ -4,10 +4,13 @@ import numpy as np
 import pandas as pd
 from pandas.api.types import is_numeric_dtype
 
-from fraudshield.training import ARTIFACT_PATH, MODEL_PATH
+from fraudshield.training import ARTIFACT_PATH, MODEL_PATH, ensure_default_model
 
 
 def load_artifacts(required=True):
+    if not MODEL_PATH.exists() or not ARTIFACT_PATH.exists():
+        ensure_default_model()
+
     if not MODEL_PATH.exists() or not ARTIFACT_PATH.exists():
         if required:
             raise RuntimeError("No trained model found. Upload a dataset and train the project first.")
